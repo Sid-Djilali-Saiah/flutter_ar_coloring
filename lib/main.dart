@@ -84,6 +84,12 @@ class _HelloWorldState extends State<HelloWorld> {
   }
 
   @override
+  void initState() {
+    arCoreController = new ArCoreController(id: 1);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     arCoreController.dispose();
     super.dispose();
