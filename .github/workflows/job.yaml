@@ -1,0 +1,30 @@
+name: Main Workflow
+on: push
+env:
+  SONARQUBE_TOKEN: ${{secrets.SONARQUBE_TOKEN}}
+jobs:
+  workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '2.10.0'
+          channel: stable
+      - name: flutter version
+        run: flutter --version
+      - name: flutter pub get
+        run: flutter pub get
+      - name: flutter analyze
+        run: flutter analyze
+      - name: flutter test
+        run: flutter test
+      - name: build apk
+        run: flutter build apk
+      - name: build appbundle
+        run: flutter build appbundle
+      - name: SonarQube
+        run: ./run_sonar_scanner.sh
