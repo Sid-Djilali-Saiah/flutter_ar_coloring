@@ -7,7 +7,7 @@ packages:
       name: arcore_flutter_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.11"
+    version: "0.1.0-null-safety.3"
   async:
     dependency: transitive
     description:
@@ -63,7 +63,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.6"
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -186,4 +186,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.16.0 <3.0.0"
-  flutter: ">=1.10.0"
+  flutter: ">=2.0.0"

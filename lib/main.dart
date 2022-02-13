@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 void main() {
-  runApp(HelloWorld());
+  runApp(const HelloWorld());
 }
 
 class HelloWorld extends StatefulWidget {
+  const HelloWorld({Key? key}) : super(key: key);
+
   @override
   _HelloWorldState createState() => _HelloWorldState();
 }
@@ -85,7 +87,7 @@ class _HelloWorldState extends State<HelloWorld> {
 
   @override
   void initState() {
-    arCoreController = new ArCoreController(id: 1);
+    arCoreController = ArCoreController(id: 1);
     super.initState();
   }
 
