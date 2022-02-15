@@ -23,6 +23,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  String password = 'test_sonarqube_security';
   static const String _title = 'AR Plugin Demo';
 
   @override
