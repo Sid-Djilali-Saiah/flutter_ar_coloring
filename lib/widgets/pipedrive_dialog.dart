@@ -1,5 +1,4 @@
 import 'package:ar_flutter_plugin_example/widgets/pipedrive_form.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PipedriveDialog extends StatelessWidget {
@@ -10,15 +9,19 @@ class PipedriveDialog extends StatelessWidget {
     return TextButton(
       onPressed: () => showDialog<String>(
         context: context,
-        builder: (BuildContext context) => CupertinoAlertDialog(
-          title: Text("Success"),
-          actions: [
-            CupertinoDialogAction(
-                onPressed: () => Navigator.pop(context, 'Back'),
-                child: Text("Back")),
-            CupertinoDialogAction(onPressed: () {}, child: Text("Confirm")),
-          ],
-          content: Text("Saved successfully"),
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Pipedrive form'),
+          content: PipedriveForm(),
+          /*actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],*/
         ),
       ),
       child: const Text('Show Dialog'),

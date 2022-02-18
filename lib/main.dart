@@ -58,7 +58,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(_title),
+          leading: Image.network("https://www.cerealis-snacks.com/wp-content/uploads/2019/11/Objet-dynamique-vectoriel-logo-bonne-taillle.png"),
+          title: const Text('Cerealis'),
         ),
         body: Column(children: [
           Text('Running on: $_platformVersion\n'),
