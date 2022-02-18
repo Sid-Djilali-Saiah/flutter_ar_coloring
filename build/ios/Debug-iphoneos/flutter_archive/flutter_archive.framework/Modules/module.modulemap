@@ -1,0 +1,11 @@
+framework module flutter_archive {
+  umbrella header "flutter_archive-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module flutter_archive.Swift {
+    header "flutter_archive-Swift.h"
+    requires objc
+}
