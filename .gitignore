@@ -3,3 +3,4 @@ build/
 .flutter-plugins
 .packages
 .idea
+.dart_tool

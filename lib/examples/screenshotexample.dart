@@ -34,12 +34,8 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Screenshots'),
-        ),
-        body: Container(
-            child: Stack(children: [
+    return Container(
+        child: Stack(children: [
           ARView(
             onARViewCreated: onARViewCreated,
             planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
@@ -57,7 +53,7 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
                       child: Text("Take Screenshot")),
                 ]),
           )
-        ])));
+        ]));
   }
 
   void onARViewCreated(
