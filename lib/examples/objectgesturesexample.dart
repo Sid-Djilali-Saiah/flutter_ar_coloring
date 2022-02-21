@@ -71,7 +71,7 @@ class _ObjectGesturesWidgetState extends State<ObjectGesturesWidget> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          customPlaneTexturePath: "assets/images/triangle.png",
           showWorldOrigin: true,
           handlePans: true,
           handleRotation: true,

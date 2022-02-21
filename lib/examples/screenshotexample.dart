@@ -3,6 +3,7 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:ar_flutter_plugin_example/widgets/pipedrive_form.dart';
 import 'package:flutter/material.dart';
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin/datatypes/config_planedetection.dart';
@@ -68,7 +69,7 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          customPlaneTexturePath: "assets/images/triangle.png",
           showWorldOrigin: true,
         );
     this.arObjectManager.onInitialize();
@@ -88,15 +89,15 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
   }
 
   Future<void> onTakeScreenshot() async {
-    var image = await this.arSessionManager.snapshot();
+    MemoryImage image = await this.arSessionManager.snapshot();
+
     await showDialog(
         context: context,
-        builder: (_) => Dialog(
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(image: image, fit: BoxFit.cover)),
-              ),
-            ));
+        builder: (_) => AlertDialog(
+          title: const Text('Pipedrive form'),
+          content: PipedriveForm(image: image),
+        )
+    );
   }
 
   Future<void> onNodeTapped(List<String> nodes) async {
@@ -116,9 +117,8 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
         this.anchors.add(newAnchor);
         // Add note to anchor
         var newNode = ARNode(
-            type: NodeType.webGLB,
-            uri:
-                "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+            type: NodeType.localGLTF2,
+            uri: "assets/models/Chicken_01/Chicken_01.gltf",
             scale: Vector3(0.2, 0.2, 0.2),
             position: Vector3(0.0, 0.0, 0.0),
             rotation: Vector4(1.0, 0.0, 0.0, 0.0));
@@ -136,7 +136,7 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
       // To add a node to the tapped position without creating an anchor, use the following code (Please mind: the function onRemoveEverything has to be adapted accordingly!):
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "Models/Chicken_01/Chicken_01.gltf",
+          uri: "assets/models/Chicken_01/Chicken_01.gltf",
           scale: Vector3(0.2, 0.2, 0.2),
           transformation: singleHitTestResult.worldTransform);
       bool didAddWebNode = await this.arObjectManager.addNode(newNode);

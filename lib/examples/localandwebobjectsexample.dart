@@ -99,7 +99,7 @@ class _LocalAndWebObjectsWidgetState extends State<LocalAndWebObjectsWidget> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          customPlaneTexturePath: "assets/images/triangle.png",
           showWorldOrigin: true,
           handleTaps: false,
         );
@@ -153,7 +153,7 @@ class _LocalAndWebObjectsWidgetState extends State<LocalAndWebObjectsWidget> {
     } else {
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "Models/Chicken_01/Chicken_01.gltf",
+          uri: "assets/models/Chicken_01/Chicken_01.gltf",
           scale: Vector3(0.2, 0.2, 0.2),
           position: Vector3(0.0, 0.0, 0.0),
           rotation: Vector4(1.0, 0.0, 0.0, 0.0));

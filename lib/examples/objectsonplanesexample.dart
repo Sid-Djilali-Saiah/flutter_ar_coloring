@@ -69,7 +69,7 @@ class _ObjectsOnPlanesWidgetState extends State<ObjectsOnPlanesWidget> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          customPlaneTexturePath: "assets/images/triangle.png",
           showWorldOrigin: true,
         );
     this.arObjectManager.onInitialize();
@@ -125,7 +125,7 @@ class _ObjectsOnPlanesWidgetState extends State<ObjectsOnPlanesWidget> {
       // To add a node to the tapped position without creating an anchor, use the following code (Please mind: the function onRemoveEverything has to be adapted accordingly!):
       var newNode = ARNode(
           type: NodeType.localGLTF2,
-          uri: "Models/Chicken_01/Chicken_01.gltf",
+          uri: "assets/models/Chicken_01/Chicken_01.gltf",
           scale: Vector3(0.2, 0.2, 0.2),
           transformation: singleHitTestResult.worldTransform);
       bool didAddWebNode = await this.arObjectManager.addNode(newNode);

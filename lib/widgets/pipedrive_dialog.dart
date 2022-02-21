@@ -12,16 +12,6 @@ class PipedriveDialog extends StatelessWidget {
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Pipedrive form'),
           content: PipedriveForm(),
-          /*actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],*/
         ),
       ),
       child: const Text('Show Dialog'),

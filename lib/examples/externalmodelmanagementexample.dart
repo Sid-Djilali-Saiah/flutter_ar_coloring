@@ -166,7 +166,7 @@ class _ExternalModelManagementWidgetState
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          customPlaneTexturePath: "assets/images/triangle.png",
           showWorldOrigin: true,
         );
     this.arObjectManager.onInitialize();
