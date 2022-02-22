@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:http/http.dart' as http;
+import '../services/pipedrive_service.dart';
 
 class PipedriveForm extends StatefulWidget {
   const PipedriveForm({Key key, this.image}) : super(key: key);
@@ -26,24 +22,10 @@ class _PipedriveFormState extends State<PipedriveForm> {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('User created in Pipedrive.')));
 
-      final temp = await getTemporaryDirectory();
-      final path = '${temp.path}/image.jpg';
-      final File newImagePath = File(path); //pasting path
+      PipedriveService.createUser(nameController.text, emailController.text);
+      var path = await PipedriveService.compressImageToFile(widget.image, 'image2.jpg');
 
-      newImagePath.writeAsBytesSync(widget.image.bytes);
-
-      await FlutterImageCompress.compressAndGetFile(
-        newImagePath.absolute.path, '${temp.path}/image2.jpg',
-        quality: 95,
-      );
-
-      var url = Uri.parse('https://nonstopintegration.pipedrive.com/api/v1/persons?api_token=3ccde48496d27a21b7362aa1bd42b888bbc00164');
-      http.post(url, body: {
-        'name': nameController.text,
-        'email': emailController.text
-      });
-
-      Share.shareFiles(['${temp.path}/image2.jpg'], text: 'Test');
+      Share.shareFiles([path], text: '#Cerealis');
     }
   }
 
@@ -62,10 +44,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
                 labelText: 'Name',
               ),
               validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
+                return PipedriveService.isNameValid(value);
               },
             ),
             TextFormField(
@@ -76,10 +55,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
                 labelText: 'Email',
               ),
               validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter valid Email';
-                }
-                return null;
+                return PipedriveService.isEmailValid(value);
               },
             ),
             Row(

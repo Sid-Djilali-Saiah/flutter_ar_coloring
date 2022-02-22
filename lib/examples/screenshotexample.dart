@@ -118,7 +118,8 @@ class _ScreenshotWidgetState extends State<ScreenshotWidget> {
         // Add note to anchor
         var newNode = ARNode(
             type: NodeType.localGLTF2,
-            uri: "assets/models/Chicken_01/Chicken_01.gltf",
+            uri: "assets/models/Dinosaur/dinosaur.gltf",
+            // uri: "assets/models/Chicken_01/Chicken_01.gltf",
             scale: Vector3(0.2, 0.2, 0.2),
             position: Vector3(0.0, 0.0, 0.0),
             rotation: Vector4(1.0, 0.0, 0.0, 0.0));
