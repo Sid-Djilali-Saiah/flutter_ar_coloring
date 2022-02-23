@@ -1,7 +1,6 @@
+import 'package:ar_flutter_plugin_example/arcore_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'ar_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +45,8 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(children: [
           Expanded(
-            child: ArView(),
+            // child: ArView(),
+            child: AugmentedPage(),
           ),
         ]),
       ),

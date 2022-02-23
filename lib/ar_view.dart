@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:ar_flutter_plugin/managers/ar_location_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
@@ -14,7 +15,9 @@ import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
 import 'package:vector_math/vector_math_64.dart';
 
 class ArView extends StatefulWidget {
-  ArView({Key key}) : super(key: key);
+  ArView({Key key, this.modelFileName}) : super(key: key);
+  String modelFileName = '';
+
   @override
   _ArViewState createState() => _ArViewState();
 }
@@ -35,6 +38,8 @@ class _ArViewState extends State<ArView> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Image from new ar view : ' + widget.modelFileName);
+
     return Container(
         child: Stack(children: [
           ARView(
@@ -77,9 +82,11 @@ class _ArViewState extends State<ArView> {
   }
 
   Future<void> onRemoveEverything() async {
-    /*nodes.forEach((node) {
-      this.arObjectManager.removeNode(node);
-    });*/
+    // Flushbar(
+    //   title: 'Image from new ar view : ' + widget.modelFileName, //ignored since titleText != null
+    //   // message: widget.modelFileName, //ignored since messageText != null
+    // )..show(context);
+
     anchors.forEach((anchor) {
       this.arAnchorManager.removeAnchor(anchor);
     });
@@ -103,6 +110,23 @@ class _ArViewState extends State<ArView> {
     this.arSessionManager.onError("Tapped $number node(s)");
   }
 
+  String getModelFilename() {
+    const rootPath = "assets/models/";
+    switch (widget.modelFileName) {
+      case "elephant":
+        return rootPath + "Chicken_01/Chicken_01.gltf";
+        break;
+      case "snake":
+        return rootPath + "Dinosaur/dinosaur.gltf";
+        break;
+      case "monkey":
+        return rootPath + "Chicken_01/Chicken_01.gltf";
+        break;
+      default:
+        return rootPath + "Dinosaur/dinosaur.gltf";
+    }
+  }
+
   Future<void> onPlaneOrPointTapped(
       List<ARHitTestResult> hitTestResults) async {
     var singleHitTestResult = hitTestResults.firstWhere(
@@ -116,8 +140,7 @@ class _ArViewState extends State<ArView> {
         // Add note to anchor
         var newNode = ARNode(
             type: NodeType.localGLTF2,
-            uri: "assets/models/Dinosaur/dinosaur.gltf",
-            // uri: "assets/models/Chicken_01/Chicken_01.gltf",
+            uri: getModelFilename(),
             scale: Vector3(0.2, 0.2, 0.2),
             position: Vector3(0.0, 0.0, 0.0),
             rotation: Vector4(1.0, 0.0, 0.0, 0.0));

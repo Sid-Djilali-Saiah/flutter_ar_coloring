@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import '../services/pipedrive_service.dart';
+import 'package:ar_flutter_plugin_example/services/pipedrive_service.dart';
 
 class PipedriveForm extends StatefulWidget {
   const PipedriveForm({Key key, this.image}) : super(key: key);
