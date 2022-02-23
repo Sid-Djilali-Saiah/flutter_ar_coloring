@@ -26,6 +26,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
       var path = await PipedriveService.compressImageToFile(widget.image, 'image2.jpg');
 
       Share.shareFiles([path], text: '#Cerealis');
+      Navigator.pop(context, 'Cancel');
     }
   }
 
