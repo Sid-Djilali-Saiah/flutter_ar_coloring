@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'examples/screenshotexample.dart';
+import 'ar_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(children: [
           Expanded(
-            child: ScreenshotWidget(),
+            child: ArView(),
           ),
         ]),
       ),
