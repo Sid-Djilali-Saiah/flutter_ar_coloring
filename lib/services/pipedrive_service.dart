@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class PipedriveService {
   static void createUser(name, email) async {
@@ -11,21 +7,6 @@ class PipedriveService {
       'name': name,
       'email': email
     });
-  }
-
-  static Future<String> compressImageToFile(image, filename) async {
-    final temp = await getTemporaryDirectory();
-    final path = '${temp.path}/image.jpg';
-    final File newImagePath = File(path); //pasting path
-
-    newImagePath.writeAsBytesSync(image.bytes);
-
-    await FlutterImageCompress.compressAndGetFile(
-      newImagePath.absolute.path, '${temp.path}/$filename',
-      quality: 95,
-    );
-
-    return '${temp.path}/$filename';
   }
 
   static String isNameValid(String name) {

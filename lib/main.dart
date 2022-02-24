@@ -31,18 +31,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.amber.shade600,
-          leading: Image.asset("assets/images/header.png"),
-          title: const Text('Cerealis',
-          style: TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic,
-              fontSize: 30)
-          ),
-        ),
         body: Column(children: [
           Expanded(
             // child: ArView(),

@@ -1,3 +1,4 @@
+import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ar_flutter_plugin_example/services/pipedrive_service.dart';
@@ -23,7 +24,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
           SnackBar(content: Text('User created in Pipedrive.')));
 
       PipedriveService.createUser(nameController.text, emailController.text);
-      var path = await PipedriveService.compressImageToFile(widget.image, 'image2.jpg');
+      var path = await UtilsService.compressImageToFile(widget.image, 'image2.jpg');
 
       Share.shareFiles([path], text: '#Cerealis');
       Navigator.pop(context, 'Cancel');
@@ -59,19 +60,22 @@ class _PipedriveFormState extends State<PipedriveForm> {
                 return PipedriveService.isEmailValid(value);
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:
-                <Widget>[
-                  ElevatedButton(
-                    child: const Text('Cancel'),
-                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                  ),
-                  ElevatedButton(
-                    child: const Text('Submit'),
-                    onPressed: () => submit(),
-                  )
-              ]
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children:
+                  <Widget>[
+                    ElevatedButton(
+                      child: const Text('Cancel'),
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                    ),
+                    ElevatedButton(
+                      child: const Text('Submit'),
+                      onPressed: () => submit(),
+                    )
+                  ]
+              ),
             )
           ],
         )

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:ar_flutter_plugin_example/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
@@ -19,7 +20,21 @@ class _AugmentedPageState extends State<AugmentedPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: BaseAppBar(actions: [
+          IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () async {
+              this.arCoreController.dispose();
+
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ArView(selectedModel: 'elephant')),
+              );
+            },
+          )
+        ],),
         body: ArCoreView(
           onArCoreViewCreated: _onArCoreViewCreated,
           type: ArCoreViewType.AUGMENTEDIMAGES,
@@ -50,9 +65,12 @@ class _AugmentedPageState extends State<AugmentedPage> {
   _handleOnTrackingImage(ArCoreAugmentedImage augmentedImage) async {
     if (!augmentedImagesMap.containsKey(augmentedImage.name)) {
       augmentedImagesMap[augmentedImage.name] = augmentedImage;
-      await Navigator.push(
+
+      this.arCoreController.dispose();
+
+      await Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ArView(modelFileName: augmentedImage.name)),
+        MaterialPageRoute(builder: (context) => ArView(selectedModel: augmentedImage.name)),
       );
     }
   }

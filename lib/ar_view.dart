@@ -4,6 +4,8 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:ar_flutter_plugin_example/services/utils_service.dart';
+import 'package:ar_flutter_plugin_example/widgets/header.dart';
 import 'package:ar_flutter_plugin_example/widgets/pipedrive_form.dart';
 import 'package:flutter/material.dart';
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
@@ -12,11 +14,12 @@ import 'package:ar_flutter_plugin/datatypes/node_types.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
-import 'package:vector_math/vector_math_64.dart';
+import 'package:vector_math/vector_math_64.dart' as Vector;
 
 class ArView extends StatefulWidget {
-  ArView({Key key, this.modelFileName}) : super(key: key);
-  String modelFileName = '';
+  final String selectedModel;
+
+  ArView({Key key, this.selectedModel}) : super(key: key);
 
   @override
   _ArViewState createState() => _ArViewState();
@@ -31,35 +34,62 @@ class _ArViewState extends State<ArView> {
   List<ARAnchor> anchors = [];
 
   @override
-  void dispose() {
-    super.dispose();
-    arSessionManager.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    debugPrint('Image from new ar view : ' + widget.modelFileName);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: BaseAppBar(
+          actions: [],
+        ),
+        body: FutureBuilder<bool>(
+          future: UtilsService.hasInternet(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            List<Widget> actions = [];
 
-    return Container(
-        child: Stack(children: [
-          ARView(
-            onARViewCreated: onARViewCreated,
-            planeDetectionConfig: PlaneDetectionConfig.horizontalAndVertical,
-          ),
-          Align(
-            alignment: FractionalOffset.bottomCenter,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: onRemoveEverything,
-                      child: Text("Remove Everything")),
-                  ElevatedButton(
-                      onPressed: onTakeScreenshot,
-                      child: Text("Take Screenshot")),
-                ]),
-          )
-        ]));
+            if (snapshot.hasData && snapshot.data == true) {
+              actions = [
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: onTakeScreenshot,
+                  color: Colors.amber.shade600,
+                  iconSize: 50,
+                )
+              ];
+            }
+
+            actions.add(IconButton(
+              icon: const Icon(Icons.highlight_remove_outlined),
+              onPressed: onRemoveEverything,
+              color: Colors.amber.shade600,
+              iconSize: 50,
+            ));
+
+            actions.add(IconButton(
+              icon: const Icon(Icons.perm_device_information),
+              onPressed: onShowInformation,
+              color: Colors.amber.shade600,
+              iconSize: 50,
+            ));
+
+            return Container(
+                child: Stack(children: [
+              ARView(
+                onARViewCreated: onARViewCreated,
+                planeDetectionConfig:
+                    PlaneDetectionConfig.horizontalAndVertical,
+              ),
+              Align(
+                alignment: FractionalOffset.bottomLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: actions,
+                ),
+              )
+            ]));
+          },
+        ),
+      ),
+    );
   }
 
   void onARViewCreated(
@@ -82,27 +112,51 @@ class _ArViewState extends State<ArView> {
   }
 
   Future<void> onRemoveEverything() async {
-    // Flushbar(
-    //   title: 'Image from new ar view : ' + widget.modelFileName, //ignored since titleText != null
-    //   // message: widget.modelFileName, //ignored since messageText != null
-    // )..show(context);
-
     anchors.forEach((anchor) {
       this.arAnchorManager.removeAnchor(anchor);
     });
     anchors = [];
   }
 
-  Future<void> onTakeScreenshot() async {
+  Future<void> onShowInformation() async {
+    Flushbar(
+      title: 'Information',
+      message:
+          'The following model has been selected : ' + widget.selectedModel,
+    )..show(context);
+  }
+
+  Future<bool> onTakeScreenshot() async {
+    bool hasInternet = await UtilsService.hasInternet();
+
+    if (hasInternet == false) {
+      await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: Text("Your internet is OFF !"),
+                content: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      ElevatedButton(
+                        child: const Text('Cancel'),
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                      ),
+                    ]),
+              )));
+      return false;
+    }
+
     MemoryImage image = await this.arSessionManager.snapshot();
 
     await showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('Pipedrive form'),
-          content: PipedriveForm(image: image),
-        )
-    );
+              content: PipedriveForm(image: image),
+            ));
+
+    return true;
   }
 
   Future<void> onNodeTapped(List<String> nodes) async {
@@ -112,7 +166,7 @@ class _ArViewState extends State<ArView> {
 
   String getModelFilename() {
     const rootPath = "assets/models/";
-    switch (widget.modelFileName) {
+    switch (widget.selectedModel) {
       case "elephant":
         return rootPath + "Chicken_01/Chicken_01.gltf";
         break;
@@ -141,9 +195,9 @@ class _ArViewState extends State<ArView> {
         var newNode = ARNode(
             type: NodeType.localGLTF2,
             uri: getModelFilename(),
-            scale: Vector3(0.2, 0.2, 0.2),
-            position: Vector3(0.0, 0.0, 0.0),
-            rotation: Vector4(1.0, 0.0, 0.0, 0.0));
+            scale: Vector.Vector3(0.2, 0.2, 0.2),
+            position: Vector.Vector3(0.0, 0.0, 0.0),
+            rotation: Vector.Vector4(1.0, 0.0, 0.0, 0.0));
         bool didAddNodeToAnchor =
             await this.arObjectManager.addNode(newNode, planeAnchor: newAnchor);
         if (didAddNodeToAnchor) {
@@ -155,5 +209,11 @@ class _ArViewState extends State<ArView> {
         this.arSessionManager.onError("Adding Anchor failed");
       }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    arSessionManager.dispose();
   }
 }
