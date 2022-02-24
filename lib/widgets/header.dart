@@ -1,43 +1,32 @@
 import 'package:flutter/material.dart';
 
-class AppHeader extends StatelessWidget {
-  const AppHeader({Key key}) : super(key: key);
+class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final List<Widget> actions;
+
+  const BaseAppBar({Key key, this.actions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: const Text('AppBar Demo'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.navigate_next),
-            tooltip: 'Go to the next page',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text(
-                        'This is the next page',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  );
-                },
-              ));
-            },
-          ),
-        ],
-      );
+        title: const Text(
+            'Cerealis',
+            style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic,
+                fontSize: 30
+            )
+        ),
+      backgroundColor: Colors.amber.shade600,
+      actions: actions,
+      leading: Image.asset("assets/images/header.png")
+    );
+  }
+
+
+  @override
+  Size get preferredSize {
+    var appBar = AppBar();
+    return new Size.fromHeight(appBar.preferredSize.height);
   }
 }

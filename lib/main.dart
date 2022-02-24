@@ -1,7 +1,6 @@
+import 'package:ar_flutter_plugin_example/arcore_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'ar_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,21 +31,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.amber.shade600,
-          leading: Image.asset("assets/images/header.png"),
-          title: const Text('Cerealis',
-          style: TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic,
-              fontSize: 30)
-          ),
-        ),
         body: Column(children: [
           Expanded(
-            child: ArView(),
+            // child: ArView(),
+            child: AugmentedPage(),
           ),
         ]),
       ),
