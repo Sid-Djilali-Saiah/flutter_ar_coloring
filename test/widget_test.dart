@@ -25,13 +25,4 @@ void main() {
     expect(PipedriveService.isNameValid("nicolasChambonTamere"), true);
     expect(PipedriveService.isNameValid(''), false);
   });
-
-  test('is image compressed', () async {
-    // PipedriveService.compressImageToFile('../assets/images/header.png', 'test');
-
-    var image = (new MemoryImage((File("assets/images/header.jpg").readAsBytesSync())));
-    var tamere = await PipedriveService.compressImageToFile(image ,'test.jpg');
-    await Future.delayed(Duration(seconds: 3));
-    expect(tamere, 'coucou');
-  });
 }
