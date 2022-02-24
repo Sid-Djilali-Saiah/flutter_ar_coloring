@@ -45,7 +45,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
                 labelText: 'Name',
               ),
               validator: (value) {
-                return PipedriveService.isNameValid(value);
+                return PipedriveService.isNameValid(value) ? null : 'Please enter some text';
               },
             ),
             TextFormField(
@@ -56,7 +56,7 @@ class _PipedriveFormState extends State<PipedriveForm> {
                 labelText: 'Email',
               ),
               validator: (value) {
-                return PipedriveService.isEmailValid(value);
+                return PipedriveService.isEmailValid(value) ? null : 'Please enter an valid email';
               },
             ),
             Row(

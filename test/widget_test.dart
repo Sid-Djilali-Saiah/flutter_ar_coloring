@@ -5,16 +5,33 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:ar_flutter_plugin_example/main.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:ar_flutter_plugin_example/services/pipedrive_service.dart';
 
 void main() {
-  testWidgets('Verify Platform version', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
 
-    
+  test('Counter value should be incremented', () {
+    expect(PipedriveService.isEmailValid("nicolasChambonTamere@lorem.fr"), true);
+    expect(PipedriveService.isEmailValid("nicolasChambonTamere"), false);
+  });
+
+  test('is name valid', () {
+    expect(PipedriveService.isNameValid("nicolasChambonTamere"), true);
+    expect(PipedriveService.isNameValid(''), false);
+  });
+
+  test('is image compressed', () async {
+    // PipedriveService.compressImageToFile('../assets/images/header.png', 'test');
+
+    var image = (new MemoryImage((File("assets/images/header.jpg").readAsBytesSync())));
+    var tamere = await PipedriveService.compressImageToFile(image ,'test.jpg');
+    await Future.delayed(Duration(seconds: 3));
+    expect(tamere, 'coucou');
   });
 }
