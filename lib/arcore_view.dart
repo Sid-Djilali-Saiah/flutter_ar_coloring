@@ -30,7 +30,7 @@ class _AugmentedPageState extends State<AugmentedPage> {
 
               await Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ArView(selectedModel: 'elephant')),
+                MaterialPageRoute(builder: (context) => ArView(selectedModel: 'rhinoceros')),
               );
             },
           )
@@ -38,6 +38,9 @@ class _AugmentedPageState extends State<AugmentedPage> {
         body: ArCoreView(
           onArCoreViewCreated: _onArCoreViewCreated,
           type: ArCoreViewType.AUGMENTEDIMAGES,
+          enableUpdateListener: false,
+          enablePlaneRenderer: false,
+          enableTapRecognizer: false,
         ),
       ),
     );
@@ -50,12 +53,10 @@ class _AugmentedPageState extends State<AugmentedPage> {
   }
 
   loadMultipleImage() async {
-    final ByteData earth = await rootBundle.load('assets/images/earth_augmented_image.jpg');
-    final ByteData elephant = await rootBundle.load('assets/images/elephant.jpg');
-    final ByteData snake = await rootBundle.load('assets/images/snake.jpg');
-    final ByteData monkey = await rootBundle.load('assets/images/monkey.jpg');
-    bytesMap["earth"] = earth.buffer.asUint8List();
-    bytesMap["elephant"] = elephant.buffer.asUint8List();
+    final ByteData rhinoceros = await rootBundle.load('assets/models/Rhinoceros/rhinoceros.jpg');
+    final ByteData snake = await rootBundle.load('assets/models/Snake/snake.jpg');
+    final ByteData monkey = await rootBundle.load('assets/models/Monkey/monkey.jpg');
+    bytesMap["rhinoceros"] = rhinoceros.buffer.asUint8List();
     bytesMap["snake"] = snake.buffer.asUint8List();
     bytesMap["monkey"] = monkey.buffer.asUint8List();
 

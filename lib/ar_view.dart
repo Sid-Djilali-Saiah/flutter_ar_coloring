@@ -104,6 +104,7 @@ class _ArViewState extends State<ArView> {
     this.arSessionManager.onInitialize(
           showFeaturePoints: false,
           showPlanes: false,
+          showAnimatedGuide: false,
         );
     this.arObjectManager.onInitialize();
 
@@ -167,14 +168,14 @@ class _ArViewState extends State<ArView> {
   String getModelFilename() {
     const rootPath = "assets/models/";
     switch (widget.selectedModel) {
-      case "elephant":
-        return rootPath + "Chicken_01/Chicken_01.gltf";
+      case "rhinoceros":
+        return rootPath + "Rhinoceros/rhinoceros.gltf";
         break;
       case "snake":
-        return rootPath + "Dinosaur/dinosaur.gltf";
+        return rootPath + "Snake/snake.gltf";
         break;
       case "monkey":
-        return rootPath + "Chicken_01/Chicken_01.gltf";
+        return rootPath + "Monkey/monkey.gltf";
         break;
       default:
         return rootPath + "Dinosaur/dinosaur.gltf";
@@ -195,7 +196,7 @@ class _ArViewState extends State<ArView> {
         var newNode = ARNode(
             type: NodeType.localGLTF2,
             uri: getModelFilename(),
-            scale: Vector.Vector3(0.2, 0.2, 0.2),
+            scale: Vector.Vector3(0.1, 0.1, 0.1),
             position: Vector.Vector3(0.0, 0.0, 0.0),
             rotation: Vector.Vector4(1.0, 0.0, 0.0, 0.0));
         bool didAddNodeToAnchor =

@@ -1,0 +1,379 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.1.46",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Snake.002",
+            "rotation" : [
+                0,
+                0.7089555859565735,
+                0,
+                -0.7052531242370605
+            ],
+            "translation" : [
+                -30,
+                -30,
+                30
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "eye.002",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "tongue.002",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "head.002",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0,
+                0,
+                0
+            ],
+            "name" : "body.002",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Snake.002",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                },
+                {
+                    "attributes" : {
+                        "POSITION" : 4,
+                        "NORMAL" : 5,
+                        "TEXCOORD_0" : 6
+                    },
+                    "indices" : 7,
+                    "material" : 1
+                },
+                {
+                    "attributes" : {
+                        "POSITION" : 8,
+                        "NORMAL" : 9,
+                        "TEXCOORD_0" : 10
+                    },
+                    "indices" : 11,
+                    "material" : 2
+                },
+                {
+                    "attributes" : {
+                        "POSITION" : 12,
+                        "NORMAL" : 13,
+                        "TEXCOORD_0" : 14
+                    },
+                    "indices" : 15,
+                    "material" : 3
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 646,
+            "max" : [
+                5.9527201652526855,
+                48.495609283447266,
+                -42.68244171142578
+            ],
+            "min" : [
+                5.494289875030518,
+                48.03248977661133,
+                -44.51789855957031
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 646,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 646,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5123,
+            "count" : 3168,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5126,
+            "count" : 2550,
+            "max" : [
+                9.27023983001709,
+                47.67108917236328,
+                -43.22214889526367
+            ],
+            "min" : [
+                6.351039886474609,
+                47.08816909790039,
+                -44.00434112548828
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 5,
+            "componentType" : 5126,
+            "count" : 2550,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 6,
+            "componentType" : 5126,
+            "count" : 2550,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 7,
+            "componentType" : 5123,
+            "count" : 14292,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 8,
+            "componentType" : 5126,
+            "count" : 32878,
+            "max" : [
+                6.831240177154541,
+                48.92586135864258,
+                -42.24013137817383
+            ],
+            "min" : [
+                2.521049976348877,
+                47.34392166137695,
+                -44.95539093017578
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 9,
+            "componentType" : 5126,
+            "count" : 32878,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 10,
+            "componentType" : 5126,
+            "count" : 32878,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 11,
+            "componentType" : 5123,
+            "count" : 194982,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 12,
+            "componentType" : 5126,
+            "count" : 18726,
+            "max" : [
+                4.947110176086426,
+                48.82217025756836,
+                -27.220529556274414
+            ],
+            "min" : [
+                -8.810669898986816,
+                44.48822021484375,
+                -44.60818099975586
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 13,
+            "componentType" : 5126,
+            "count" : 18726,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 14,
+            "componentType" : 5126,
+            "count" : 18726,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 15,
+            "componentType" : 5123,
+            "count" : 110622,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 7752,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 7752,
+            "byteOffset" : 7752
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 5168,
+            "byteOffset" : 15504
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 6336,
+            "byteOffset" : 20672
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 30600,
+            "byteOffset" : 27008
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 30600,
+            "byteOffset" : 57608
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 20400,
+            "byteOffset" : 88208
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 28584,
+            "byteOffset" : 108608
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 394536,
+            "byteOffset" : 137192
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 394536,
+            "byteOffset" : 531728
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 263024,
+            "byteOffset" : 926264
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 389964,
+            "byteOffset" : 1189288
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 224712,
+            "byteOffset" : 1579252
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 224712,
+            "byteOffset" : 1803964
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 149808,
+            "byteOffset" : 2028676
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 221244,
+            "byteOffset" : 2178484
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 2399728,
+            "uri" : "snake.bin"
+        }
+    ]
+}
