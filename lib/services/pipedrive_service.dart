@@ -9,19 +9,11 @@ class PipedriveService {
     });
   }
 
-  static String isNameValid(String name) {
-    if (name.isEmpty) {
-      return 'Please enter some text';
-    }
-    return null;
+  static bool isNameValid(String name) {
+    return name.isNotEmpty;
   }
 
-  static String isEmailValid(String email) {
-    bool emailValid = email.isNotEmpty && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-
-    if (!emailValid) {
-      return 'Please enter an valid email';
-    }
-    return null;
+  static bool isEmailValid(String email) {
+    return email.isNotEmpty && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 }
