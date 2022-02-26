@@ -4,6 +4,7 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:ar_flutter_plugin_example/widgets/header.dart';
@@ -16,11 +17,14 @@ import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
 import 'package:vector_math/vector_math_64.dart' as Vector;
+// ignore: implementation_imports
+import 'package:arcore_flutter_plugin/src/arcore_pose.dart';
 
 class ArView extends StatefulWidget {
   final String selectedModel;
+  final ArCoreAugmentedImage arCoreAugmentedImage;
 
-  ArView({Key key, this.selectedModel}) : super(key: key);
+  ArView({Key key, this.selectedModel, this.arCoreAugmentedImage}) : super(key: key);
 
   @override
   _ArViewState createState() => _ArViewState();
@@ -111,6 +115,8 @@ class _ArViewState extends State<ArView> {
 
     this.arSessionManager.onPlaneOrPointTap = onPlaneOrPointTapped;
     this.arObjectManager.onNodeTap = onNodeTapped;
+
+    this.onFoundImage();
   }
 
   Future<void> onRemoveEverything() async {
@@ -186,31 +192,50 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onPlaneOrPointTapped(
       List<ARHitTestResult> hitTestResults) async {
+    await this.onRemoveEverything();
+
     var singleHitTestResult = hitTestResults.firstWhere(
         (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
     if (singleHitTestResult != null) {
-      var newAnchor =
-          ARPlaneAnchor(transformation: singleHitTestResult.worldTransform);
-      bool didAddAnchor = await this.arAnchorManager.addAnchor(newAnchor);
-      if (didAddAnchor) {
-        this.anchors.add(newAnchor);
-        // Add note to anchor
-        var newNode = ARNode(
-            type: NodeType.localGLTF2,
-            uri: getModelFilename(),
-            scale: Vector.Vector3(0.1, 0.1, 0.1),
-            position: Vector.Vector3(0.0, 0.0, 0.0),
-            rotation: Vector.Vector4(1.0, 0.0, 0.0, 0.0));
-        bool didAddNodeToAnchor =
-            await this.arObjectManager.addNode(newNode, planeAnchor: newAnchor);
-        if (didAddNodeToAnchor) {
-          this.nodes.add(newNode);
-        } else {
-          this.arSessionManager.onError("Adding Node to Anchor failed");
-        }
+      placeNode(singleHitTestResult.worldTransform);
+    }
+  }
+
+  Future<void> onFoundImage() async {
+    // this.arSessionManager.buildContext.widget.
+    await Future.delayed(Duration(seconds: 3));
+    ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
+
+    var transformation = new Matrix4.compose(
+        centerPose.translation,
+        new Vector.Quaternion(0.0, centerPose.rotation.y, 0.0, centerPose.rotation.w),
+        Vector.Vector3(0.1, 0.1, 0.1)
+    );
+
+    placeNode(transformation);
+  }
+
+  Future<void> placeNode(transformation) async {
+    var newAnchor = ARPlaneAnchor(transformation: transformation);
+    bool didAddAnchor = await this.arAnchorManager.addAnchor(newAnchor);
+    if (didAddAnchor) {
+      this.anchors.add(newAnchor);
+      // Add note to anchor
+      var newNode = ARNode(
+          type: NodeType.localGLTF2,
+          uri: getModelFilename(),
+          scale: Vector.Vector3(0.1, 0.1, 0.1),
+          position: Vector.Vector3(0.0, 0.0, 0.0),
+          rotation: Vector.Vector4(1.0, 0.0, 0.0, 0.0));
+      bool didAddNodeToAnchor =
+      await this.arObjectManager.addNode(newNode, planeAnchor: newAnchor);
+      if (didAddNodeToAnchor) {
+        this.nodes.add(newNode);
       } else {
-        this.arSessionManager.onError("Adding Anchor failed");
+        this.arSessionManager.onError("Adding Node to Anchor failed");
       }
+    } else {
+      this.arSessionManager.onError("Adding Anchor failed");
     }
   }
 

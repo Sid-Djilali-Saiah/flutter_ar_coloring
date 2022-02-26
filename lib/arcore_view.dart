@@ -72,7 +72,10 @@ class _AugmentedPageState extends State<AugmentedPage> {
 
       await Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => ArView(selectedModel: augmentedImage.name)),
+        MaterialPageRoute(builder: (context) => ArView(
+            selectedModel: augmentedImage.name,
+            arCoreAugmentedImage: augmentedImage
+        )),
         (route) => false
       );
     }
