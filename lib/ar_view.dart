@@ -4,6 +4,7 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:ar_flutter_plugin_example/widgets/header.dart';
 import 'package:ar_flutter_plugin_example/widgets/pipedrive_form.dart';
@@ -39,7 +40,14 @@ class _ArViewState extends State<ArView> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: BaseAppBar(
-          actions: [],
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () async {
+                Restart.restartApp();
+              },
+            )
+          ],
         ),
         body: FutureBuilder<bool>(
           future: UtilsService.hasInternet(),
@@ -60,13 +68,6 @@ class _ArViewState extends State<ArView> {
             actions.add(IconButton(
               icon: const Icon(Icons.highlight_remove_outlined),
               onPressed: onRemoveEverything,
-              color: Colors.amber.shade600,
-              iconSize: 50,
-            ));
-
-            actions.add(IconButton(
-              icon: const Icon(Icons.perm_device_information),
-              onPressed: onShowInformation,
               color: Colors.amber.shade600,
               iconSize: 50,
             ));
@@ -134,8 +135,8 @@ class _ArViewState extends State<ArView> {
       await showDialog(
           context: context,
           builder: (_) => AlertDialog(
-                title: Text("Your internet is OFF !"),
-                content: Padding(
+              title: Text("Your internet is OFF !"),
+              content: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -161,8 +162,9 @@ class _ArViewState extends State<ArView> {
   }
 
   Future<void> onNodeTapped(List<String> nodes) async {
-    var number = nodes.length;
-    this.arSessionManager.onError("Tapped $number node(s)");
+    String modelName =
+        "${widget.selectedModel.toUpperCase()[0]}${widget.selectedModel.substring(1).toLowerCase()}";
+    this.arSessionManager.onError("This is a : " + modelName);
   }
 
   String getModelFilename() {
@@ -213,8 +215,8 @@ class _ArViewState extends State<ArView> {
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
+    await arSessionManager.dispose();
     super.dispose();
-    arSessionManager.dispose();
   }
 }

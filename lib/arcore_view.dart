@@ -26,11 +26,12 @@ class _AugmentedPageState extends State<AugmentedPage> {
           IconButton(
             icon: const Icon(Icons.arrow_forward),
             onPressed: () async {
-              this.arCoreController.dispose();
+              arCoreController.dispose();
 
-              await Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ArView(selectedModel: 'rhinoceros')),
+              await Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => ArView(selectedModel: 'dinosaur')),
+                  (route) => false
               );
             },
           )
@@ -69,9 +70,10 @@ class _AugmentedPageState extends State<AugmentedPage> {
 
       this.arCoreController.dispose();
 
-      await Navigator.pushReplacement(
+      await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => ArView(selectedModel: augmentedImage.name)),
+        (route) => false
       );
     }
   }
