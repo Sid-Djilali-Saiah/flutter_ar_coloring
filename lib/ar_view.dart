@@ -21,10 +21,9 @@ import 'package:vector_math/vector_math_64.dart' as Vector;
 import 'package:arcore_flutter_plugin/src/arcore_pose.dart';
 
 class ArView extends StatefulWidget {
-  final String selectedModel;
   final ArCoreAugmentedImage arCoreAugmentedImage;
 
-  ArView({Key key, this.selectedModel, this.arCoreAugmentedImage}) : super(key: key);
+  ArView({Key key, this.arCoreAugmentedImage}) : super(key: key);
 
   @override
   _ArViewState createState() => _ArViewState();
@@ -81,7 +80,7 @@ class _ArViewState extends State<ArView> {
               ARView(
                 onARViewCreated: onARViewCreated,
                 planeDetectionConfig:
-                    PlaneDetectionConfig.horizontalAndVertical,
+                    PlaneDetectionConfig.horizontal,
               ),
               Align(
                 alignment: FractionalOffset.bottomLeft,
@@ -130,7 +129,7 @@ class _ArViewState extends State<ArView> {
     Flushbar(
       title: 'Information',
       message:
-          'The following model has been selected : ' + widget.selectedModel,
+          'The following model has been selected : ' + widget.arCoreAugmentedImage?.name,
     )..show(context);
   }
 
@@ -169,13 +168,13 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     String modelName =
-        "${widget.selectedModel.toUpperCase()[0]}${widget.selectedModel.substring(1).toLowerCase()}";
+        "${widget.arCoreAugmentedImage.name.toUpperCase()[0]}${widget.arCoreAugmentedImage.name.substring(1).toLowerCase()}";
     this.arSessionManager.onError("This is a : " + modelName);
   }
 
   String getModelFilename() {
     const rootPath = "assets/models/";
-    switch (widget.selectedModel) {
+    switch (widget.arCoreAugmentedImage?.name) {
       case "rhinoceros":
         return rootPath + "Rhinoceros/rhinoceros.gltf";
         break;
@@ -202,7 +201,6 @@ class _ArViewState extends State<ArView> {
   }
 
   Future<void> onFoundImage() async {
-    // this.arSessionManager.buildContext.widget.
     await Future.delayed(Duration(seconds: 3));
     ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
 

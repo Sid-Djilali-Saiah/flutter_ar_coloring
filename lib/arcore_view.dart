@@ -30,7 +30,7 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
 
               await Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => ArView(selectedModel: 'dinosaur')),
+                  MaterialPageRoute(builder: (context) => ArView()),
                   (route) => false
               );
             },
@@ -39,9 +39,6 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
         body: ArCoreView(
           onArCoreViewCreated: _onArCoreViewCreated,
           type: ArCoreViewType.AUGMENTEDIMAGES,
-          enableUpdateListener: false,
-          enablePlaneRenderer: false,
-          enableTapRecognizer: false,
         ),
       ),
     );
@@ -73,7 +70,6 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => ArView(
-            selectedModel: augmentedImage.name,
             arCoreAugmentedImage: augmentedImage
         )),
         (route) => false
