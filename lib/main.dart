@@ -31,12 +31,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Column(children: [
           Expanded(
-            // child: ArView(),
-            child: AugmentedPage(),
+            child: ARCoreViewWidget(),
           ),
         ]),
       ),

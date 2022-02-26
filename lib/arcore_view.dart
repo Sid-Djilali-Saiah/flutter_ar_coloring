@@ -7,12 +7,12 @@ import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 
 import 'ar_view.dart';
 
-class AugmentedPage extends StatefulWidget {
+class ARCoreViewWidget extends StatefulWidget {
   @override
-  _AugmentedPageState createState() => _AugmentedPageState();
+  _ARCoreViewWidgetState createState() => _ARCoreViewWidgetState();
 }
 
-class _AugmentedPageState extends State<AugmentedPage> {
+class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
   ArCoreController arCoreController;
   Map<String, ArCoreAugmentedImage> augmentedImagesMap = Map();
   Map<String, Uint8List> bytesMap = Map();
