@@ -56,7 +56,6 @@ flutter:
   assets:
     - assets/images/
     - assets/models/
-    - assets/models/Chicken_01/
     - assets/models/Dinosaur/
     - assets/models/Rhinoceros/
     - assets/models/Monkey/
