@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UtilsService {
   static Future<String> compressImageToFile(image, filename) async {
@@ -30,5 +31,13 @@ class UtilsService {
     }
 
     return false;
+  }
+
+  static Future<void> askPermissions() async {
+    await [
+      Permission.camera,
+      Permission.storage,
+      Permission.location,
+    ].request();
   }
 }

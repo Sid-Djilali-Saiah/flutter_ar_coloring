@@ -1,4 +1,5 @@
 import 'package:ar_flutter_plugin_example/arcore_view.dart';
+import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -30,6 +31,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    UtilsService.askPermissions();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

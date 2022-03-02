@@ -25,18 +25,18 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: BaseAppBar(actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_forward),
-            onPressed: () async {
-              arCoreController.dispose();
-
-              await Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => ArView()),
-                  (route) => false
-              );
-            },
-          )
+          // IconButton(
+          //   icon: const Icon(Icons.arrow_forward),
+          //   onPressed: () async {
+          //     arCoreController.dispose();
+          //
+          //     await Navigator.pushAndRemoveUntil(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => ArView()),
+          //         (route) => false
+          //     );
+          //   },
+          // )
         ],),
         body: ArCoreView(
           onArCoreViewCreated: _onArCoreViewCreated,
@@ -68,8 +68,13 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
     if (!augmentedImagesMap.containsKey(augmentedImage.name)) {
       augmentedImagesMap[augmentedImage.name] = augmentedImage;
 
-      String imagePath = await NativeScreenshot.takeScreenshot();
-      Uint8List imageBytes = File(imagePath).readAsBytesSync();
+      Uint8List imageBytes;
+      try {
+        String imagePath = await NativeScreenshot.takeScreenshot();
+        imageBytes = File(imagePath).readAsBytesSync();
+      } on Exception catch (e) {
+        print(e.toString());
+      }
 
       this.arCoreController.dispose();
 

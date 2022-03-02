@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:ar_flutter_plugin/managers/ar_location_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
@@ -8,6 +8,7 @@ import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
 import 'package:ar_flutter_plugin_example/services/texturing_service.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:native_screenshot/native_screenshot.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:ar_flutter_plugin_example/widgets/header.dart';
@@ -25,7 +26,7 @@ import 'package:arcore_flutter_plugin/src/arcore_pose.dart';
 
 class ArView extends StatefulWidget {
   final ArCoreAugmentedImage arCoreAugmentedImage;
-  final Uint8List screenshotBytes;
+  Uint8List screenshotBytes;
 
   ArView({Key key, this.arCoreAugmentedImage, this.screenshotBytes}) : super(key: key);
 
@@ -53,7 +54,13 @@ class _ArViewState extends State<ArView> {
               onPressed: () async {
                 Restart.restartApp();
               },
-            )
+            ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () async {
+                onRefresh();
+              },
+            ),
           ],
         ),
         body: FutureBuilder<bool>(
@@ -129,14 +136,6 @@ class _ArViewState extends State<ArView> {
     anchors = [];
   }
 
-  Future<void> onShowInformation() async {
-    Flushbar(
-      title: 'Information',
-      message:
-          'The following model has been selected : ' + widget.arCoreAugmentedImage?.name,
-    )..show(context);
-  }
-
   Future<bool> onTakeScreenshot() async {
     bool hasInternet = await UtilsService.hasInternet();
 
@@ -172,7 +171,7 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     String modelName =
-        "${widget.arCoreAugmentedImage.name.toUpperCase()[0]}${widget.arCoreAugmentedImage.name.substring(1).toLowerCase()}";
+        "${widget.arCoreAugmentedImage?.name.toUpperCase()[0]}${widget.arCoreAugmentedImage?.name.substring(1).toLowerCase()}";
     this.arSessionManager.onError("This is a : " + modelName);
   }
 
@@ -191,7 +190,7 @@ class _ArViewState extends State<ArView> {
         break;
     }
 
-    if (widget.screenshotBytes.length > 0) {
+    if (widget.screenshotBytes.isNotEmpty) {
       String webModelPath = await TexturingService.getTexturedFile(widget.screenshotBytes, widget.arCoreAugmentedImage?.name);
       if (webModelPath.isNotEmpty) {
         return {
@@ -202,6 +201,23 @@ class _ArViewState extends State<ArView> {
     }
 
     return {'modalPath': modelPath, 'type': NodeType.localGLTF2};
+  }
+
+  Future<void> onRefresh() async {
+    await this.onRemoveEverything();
+
+    String imagePath = await NativeScreenshot.takeScreenshot();
+    widget.screenshotBytes = File(imagePath).readAsBytesSync();
+
+    ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
+
+    var transformation = new Matrix4.compose(
+        centerPose.translation,
+        new Vector.Quaternion(0.0, centerPose.rotation.y, 0.0, centerPose.rotation.w),
+        Vector.Vector3(0.1, 0.1, 0.1)
+    );
+
+    await placeNode(transformation);
   }
 
   Future<void> onPlaneOrPointTapped(
@@ -216,16 +232,18 @@ class _ArViewState extends State<ArView> {
   }
 
   Future<void> onFoundImage() async {
-    await Future.delayed(Duration(seconds: 3));
-    ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
+    if (widget.arCoreAugmentedImage != null) {
+      await Future.delayed(Duration(seconds: 2));
+      ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
 
-    var transformation = new Matrix4.compose(
-        centerPose.translation,
-        new Vector.Quaternion(0.0, centerPose.rotation.y, 0.0, centerPose.rotation.w),
-        Vector.Vector3(0.1, 0.1, 0.1)
-    );
+      var transformation = new Matrix4.compose(
+          centerPose.translation,
+          new Vector.Quaternion(0.0, centerPose.rotation.y, 0.0, centerPose.rotation.w),
+          Vector.Vector3(0.1, 0.1, 0.1)
+      );
 
-    await placeNode(transformation);
+      await placeNode(transformation);
+    }
   }
 
   Future<void> placeNode(transformation) async {
