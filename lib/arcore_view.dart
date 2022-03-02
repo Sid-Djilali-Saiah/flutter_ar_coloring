@@ -55,11 +55,17 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
 
   loadMultipleImage() async {
     final ByteData rhinoceros = await rootBundle.load('assets/models/Rhinoceros/rhinoceros.jpg');
+    final ByteData rhinocerosHead = await rootBundle.load('assets/models/Rhinoceros/head.jpg');
     final ByteData snake = await rootBundle.load('assets/models/Snake/snake.jpg');
+    final ByteData snakeHead = await rootBundle.load('assets/models/Snake/head.jpg');
     final ByteData monkey = await rootBundle.load('assets/models/Monkey/monkey.jpg');
+    final ByteData monkeyHead = await rootBundle.load('assets/models/Monkey/head.jpg');
     bytesMap["rhinoceros"] = rhinoceros.buffer.asUint8List();
+    bytesMap["rhinocerosHead"] = rhinocerosHead.buffer.asUint8List();
     bytesMap["snake"] = snake.buffer.asUint8List();
+    bytesMap["snakeHead"] = snakeHead.buffer.asUint8List();
     bytesMap["monkey"] = monkey.buffer.asUint8List();
+    bytesMap["monkeyHead"] = monkeyHead.buffer.asUint8List();
 
     arCoreController.loadMultipleAugmentedImage(bytesMap: bytesMap);
   }

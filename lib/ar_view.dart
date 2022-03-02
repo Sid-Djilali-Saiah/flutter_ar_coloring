@@ -172,14 +172,14 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     String modelName =
-        "${widget.arCoreAugmentedImage?.name?.toUpperCase()[0]}${widget.arCoreAugmentedImage?.name?.substring(1)?.toLowerCase()}";
+        "${(await getModelName())?.toUpperCase()[0]}${(await getModelName())?.substring(1)?.toLowerCase()}";
     this.arSessionManager.onError("This is a : " + modelName);
   }
 
   Future<Map<String, Object>> getModelData() async {
     const rootPath = "assets/models/";
     String modelPath = rootPath + "Dinosaur/dinosaur.gltf";
-    switch (widget.arCoreAugmentedImage?.name) {
+    switch (await getModelName()) {
       case "rhinoceros":
         modelPath = rootPath + "Rhinoceros/rhinoceros.gltf";
         break;
@@ -192,7 +192,7 @@ class _ArViewState extends State<ArView> {
     }
 
     if (widget.screenshotBytes.isNotEmpty) {
-      String webModelPath = await TexturingService.getTexturedFile(widget.screenshotBytes, widget.arCoreAugmentedImage?.name);
+      String webModelPath = await TexturingService.getTexturedFile(widget.screenshotBytes, await getModelName());
       if (webModelPath.isNotEmpty) {
         return {
           'modalPath': "http://92.91.241.13:2000/get/model/" + webModelPath,
@@ -251,6 +251,7 @@ class _ArViewState extends State<ArView> {
     var newAnchor = ARPlaneAnchor(transformation: transformation);
     bool didAddAnchor = await this.arAnchorManager.addAnchor(newAnchor);
     if (didAddAnchor) {
+      this.arSessionManager.onError("Adding node ...");
       this.anchors.add(newAnchor);
       // Add note to anchor
       var modelData = await getModelData();
@@ -270,6 +271,22 @@ class _ArViewState extends State<ArView> {
     } else {
       this.arSessionManager.onError("Adding Anchor failed");
     }
+  }
+
+  Future<String> getModelName() async {
+    switch (widget.arCoreAugmentedImage?.name) {
+      case "rhinocerosHead":
+        return "rhinoceros";
+        break;
+      case "snakeHead":
+        return "snake";
+        break;
+      case "monkeyHead":
+        return "monkey";
+        break;
+    }
+
+    return widget.arCoreAugmentedImage?.name;
   }
 
   @override
