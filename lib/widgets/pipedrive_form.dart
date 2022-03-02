@@ -2,6 +2,7 @@ import 'package:ar_flutter_plugin_example/services/utils_service.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ar_flutter_plugin_example/services/pipedrive_service.dart';
+import 'package:checkbox_formfield/checkbox_formfield.dart';
 
 class PipedriveForm extends StatefulWidget {
   const PipedriveForm({Key key, this.image}) : super(key: key);
@@ -59,6 +60,18 @@ class _PipedriveFormState extends State<PipedriveForm> {
               validator: (value) {
                 return PipedriveService.isEmailValid(value) ? null : 'Please enter an valid email';
               },
+            ),
+            CheckboxListTileFormField(
+              title: Text('I agree to share my data', style: TextStyle(fontSize: 12),),
+              validator: (bool value) {
+                if (value) {
+                  return null;
+                } else {
+                  return 'Please, check the box';
+                }
+              },
+              autovalidateMode: AutovalidateMode.disabled,
+              contentPadding: const EdgeInsets.only(top: 20.0),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),

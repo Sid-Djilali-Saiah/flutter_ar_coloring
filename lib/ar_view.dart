@@ -24,6 +24,7 @@ import 'package:vector_math/vector_math_64.dart' as Vector;
 // ignore: implementation_imports
 import 'package:arcore_flutter_plugin/src/arcore_pose.dart';
 
+// ignore: must_be_immutable
 class ArView extends StatefulWidget {
   final ArCoreAugmentedImage arCoreAugmentedImage;
   Uint8List screenshotBytes;
@@ -171,7 +172,7 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onNodeTapped(List<String> nodes) async {
     String modelName =
-        "${widget.arCoreAugmentedImage?.name.toUpperCase()[0]}${widget.arCoreAugmentedImage?.name.substring(1).toLowerCase()}";
+        "${widget.arCoreAugmentedImage?.name?.toUpperCase()[0]}${widget.arCoreAugmentedImage?.name?.substring(1)?.toLowerCase()}";
     this.arSessionManager.onError("This is a : " + modelName);
   }
 
@@ -233,7 +234,7 @@ class _ArViewState extends State<ArView> {
 
   Future<void> onFoundImage() async {
     if (widget.arCoreAugmentedImage != null) {
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 3));
       ArCorePose centerPose = widget.arCoreAugmentedImage.centerPose;
 
       var transformation = new Matrix4.compose(
