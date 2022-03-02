@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:ar_flutter_plugin/managers/ar_location_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:ar_flutter_plugin_example/services/texturing_service.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:ar_flutter_plugin_example/services/utils_service.dart';
@@ -22,8 +25,9 @@ import 'package:arcore_flutter_plugin/src/arcore_pose.dart';
 
 class ArView extends StatefulWidget {
   final ArCoreAugmentedImage arCoreAugmentedImage;
+  final Uint8List screenshotBytes;
 
-  ArView({Key key, this.arCoreAugmentedImage}) : super(key: key);
+  ArView({Key key, this.arCoreAugmentedImage, this.screenshotBytes}) : super(key: key);
 
   @override
   _ArViewState createState() => _ArViewState();
@@ -172,21 +176,32 @@ class _ArViewState extends State<ArView> {
     this.arSessionManager.onError("This is a : " + modelName);
   }
 
-  String getModelFilename() {
+  Future<Map<String, Object>> getModelData() async {
     const rootPath = "assets/models/";
+    String modelPath = rootPath + "Dinosaur/dinosaur.gltf";
     switch (widget.arCoreAugmentedImage?.name) {
       case "rhinoceros":
-        return rootPath + "Rhinoceros/rhinoceros.gltf";
+        modelPath = rootPath + "Rhinoceros/rhinoceros.gltf";
         break;
       case "snake":
-        return rootPath + "Snake/snake.gltf";
+        modelPath = rootPath + "Snake/snake.gltf";
         break;
       case "monkey":
-        return rootPath + "Monkey/monkey.gltf";
+        modelPath = rootPath + "Monkey/monkey.gltf";
         break;
-      default:
-        return rootPath + "Dinosaur/dinosaur.gltf";
     }
+
+    if (widget.screenshotBytes.length > 0) {
+      String webModelPath = await TexturingService.getTexturedFile(widget.screenshotBytes, widget.arCoreAugmentedImage?.name);
+      if (webModelPath.isNotEmpty) {
+        return {
+          'modalPath': "http://92.91.241.13:2000/get/model/" + webModelPath,
+          'type': NodeType.webGLB
+        };
+      }
+    }
+
+    return {'modalPath': modelPath, 'type': NodeType.localGLTF2};
   }
 
   Future<void> onPlaneOrPointTapped(
@@ -196,7 +211,7 @@ class _ArViewState extends State<ArView> {
     var singleHitTestResult = hitTestResults.firstWhere(
         (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
     if (singleHitTestResult != null) {
-      placeNode(singleHitTestResult.worldTransform);
+      await placeNode(singleHitTestResult.worldTransform);
     }
   }
 
@@ -210,7 +225,7 @@ class _ArViewState extends State<ArView> {
         Vector.Vector3(0.1, 0.1, 0.1)
     );
 
-    placeNode(transformation);
+    await placeNode(transformation);
   }
 
   Future<void> placeNode(transformation) async {
@@ -219,9 +234,10 @@ class _ArViewState extends State<ArView> {
     if (didAddAnchor) {
       this.anchors.add(newAnchor);
       // Add note to anchor
+      var modelData = await getModelData();
       var newNode = ARNode(
-          type: NodeType.localGLTF2,
-          uri: getModelFilename(),
+          type: modelData["type"],
+          uri: modelData["modalPath"],
           scale: Vector.Vector3(0.1, 0.1, 0.1),
           position: Vector.Vector3(0.0, 0.0, 0.0),
           rotation: Vector.Vector4(1.0, 0.0, 0.0, 0.0));

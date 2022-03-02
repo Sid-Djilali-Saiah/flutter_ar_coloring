@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ar_flutter_plugin_example/widgets/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
+import 'package:native_screenshot/native_screenshot.dart';
 
 import 'ar_view.dart';
 
@@ -39,6 +41,7 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
         body: ArCoreView(
           onArCoreViewCreated: _onArCoreViewCreated,
           type: ArCoreViewType.AUGMENTEDIMAGES,
+          enablePlaneRenderer: false
         ),
       ),
     );
@@ -65,12 +68,16 @@ class _ARCoreViewWidgetState extends State<ARCoreViewWidget> {
     if (!augmentedImagesMap.containsKey(augmentedImage.name)) {
       augmentedImagesMap[augmentedImage.name] = augmentedImage;
 
+      String imagePath = await NativeScreenshot.takeScreenshot();
+      Uint8List imageBytes = File(imagePath).readAsBytesSync();
+
       this.arCoreController.dispose();
 
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => ArView(
-            arCoreAugmentedImage: augmentedImage
+            arCoreAugmentedImage: augmentedImage,
+            screenshotBytes: imageBytes
         )),
         (route) => false
       );
